@@ -21,6 +21,7 @@ import io.netty.channel.ChannelOutboundBuffer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.RecvByteBufAllocator;
 import io.netty.channel.ServerChannel;
+import io.netty.util.NoteLogger;
 
 import java.io.IOException;
 import java.net.PortUnreachableException;
@@ -65,6 +66,7 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
 
         @Override
         public void read() {
+            NoteLogger.logNote("这里开始持续的将数据写入缓冲");
             assert eventLoop().inEventLoop();
             final ChannelConfig config = config();
             final ChannelPipeline pipeline = pipeline();
@@ -93,6 +95,7 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
 
                 int size = readBuf.size();
                 for (int i = 0; i < size; i ++) {
+                    System.out.println(readBuf.get(i));
                     readPending = false;
                     pipeline.fireChannelRead(readBuf.get(i));
                 }

@@ -15,6 +15,8 @@
  */
 package io.netty.util.concurrent;
 
+import io.netty.util.NoteLogger;
+
 import static io.netty.util.internal.ObjectUtil.checkPositive;
 
 import java.util.Collections;
@@ -82,6 +84,9 @@ public abstract class MultithreadEventExecutorGroup extends AbstractEventExecuto
             boolean success = false;
             try {
                 children[i] = newChild(executor, args);
+
+                NoteLogger.logNote("调用MultithreadEventExecutorGroup构造函数 创建EventExecutor", children[i]);
+
                 success = true;
             } catch (Exception e) {
                 // TODO: Think about if this is a good exception type

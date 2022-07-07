@@ -23,7 +23,9 @@ import io.netty.channel.EventLoopTaskQueueFactory;
 import io.netty.channel.SelectStrategy;
 import io.netty.channel.SingleThreadEventLoop;
 import io.netty.util.IntSupplier;
+import io.netty.util.NoteLogger;
 import io.netty.util.concurrent.RejectedExecutionHandler;
+import io.netty.util.concurrent.SingleThreadEventExecutor;
 import io.netty.util.internal.ObjectUtil;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.ReflectionUtil;
@@ -260,6 +262,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             return new SelectorTuple(unwrappedSelector);
         }
         selectedKeys = selectedKeySet;
+        NoteLogger.logNote("这里设置了selectedKeys");
         logger.trace("instrumented a special java.util.Set into: {}", unwrappedSelector);
         return new SelectorTuple(unwrappedSelector,
                                  new SelectedSelectionKeySetSelector(unwrappedSelector, selectedKeySet));
@@ -457,6 +460,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                         nextWakeupNanos.set(curDeadlineNanos);
                         try {
                             if (!hasTasks()) {
+                                NoteLogger.logNote("select keys blocked");
                                 strategy = select(curDeadlineNanos);
                             }
                         } finally {
@@ -484,6 +488,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
                 if (ioRatio == 100) {
                     try {
                         if (strategy > 0) {
+
                             processSelectedKeys();
                         }
                     } finally {
@@ -580,6 +585,8 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     private void processSelectedKeys() {
+        NoteLogger.logNote("processSelectedKeys");
+
         if (selectedKeys != null) {
             processSelectedKeysOptimized();
         } else {
@@ -618,6 +625,8 @@ public final class NioEventLoop extends SingleThreadEventLoop {
             final SelectionKey k = i.next();
             final Object a = k.attachment();
             i.remove();
+
+            NoteLogger.logNote("key attachment", a);
 
             if (a instanceof AbstractNioChannel) {
                 processSelectedKey(k, (AbstractNioChannel) a);

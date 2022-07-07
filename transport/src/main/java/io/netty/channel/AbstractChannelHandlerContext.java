@@ -15,11 +15,9 @@
  */
 package io.netty.channel;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
-import io.netty.util.Attribute;
-import io.netty.util.AttributeKey;
-import io.netty.util.ReferenceCountUtil;
-import io.netty.util.ResourceLeakHint;
+import io.netty.util.*;
 import io.netty.util.concurrent.AbstractEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.OrderedEventExecutor;
@@ -503,7 +501,9 @@ abstract class AbstractChannelHandlerContext implements ChannelHandlerContext, R
     private void invokeBind(SocketAddress localAddress, ChannelPromise promise) {
         if (invokeHandler()) {
             try {
+                NoteLogger.logNote("这里是进行bind操作的handler", handler());
                 ((ChannelOutboundHandler) handler()).bind(this, localAddress, promise);
+
             } catch (Throwable t) {
                 notifyOutboundHandlerException(t, promise);
             }

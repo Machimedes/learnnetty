@@ -16,6 +16,7 @@
 package io.netty.channel;
 
 import io.netty.channel.Channel.Unsafe;
+import io.netty.util.NoteLogger;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.EventExecutor;
@@ -201,6 +202,8 @@ public class DefaultChannelPipeline implements ChannelPipeline {
         synchronized (this) {
             checkMultiplicity(handler);
 
+            NoteLogger.logNote("addLast将handler包装成context 打印包装的参数", group, name, handler);
+
             newCtx = newContext(group, filterName(name, handler), handler);
 
             addLast0(newCtx);
@@ -208,6 +211,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
             // If the registered is false it means that the channel was not registered on an eventLoop yet.
             // In this case we add the context to the pipeline and add a task that will call
             // ChannelHandler.handlerAdded(...) once the channel is registered.
+            NoteLogger.logNote("所属的channel是否注册", registered);
             if (!registered) {
                 newCtx.setAddPending();
                 callHandlerCallbackLater(newCtx, true);
@@ -812,6 +816,7 @@ public class DefaultChannelPipeline implements ChannelPipeline {
 
     @Override
     public final ChannelPipeline fireChannelRegistered() {
+        NoteLogger.logNote("触发head的ChannelRegistered");
         AbstractChannelHandlerContext.invokeChannelRegistered(head);
         return this;
     }

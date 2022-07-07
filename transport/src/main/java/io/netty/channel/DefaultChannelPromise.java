@@ -16,6 +16,7 @@
 package io.netty.channel;
 
 import io.netty.channel.ChannelFlushPromiseNotifier.FlushCheckpoint;
+import io.netty.util.NoteLogger;
 import io.netty.util.concurrent.DefaultPromise;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
@@ -70,6 +71,7 @@ public class DefaultChannelPromise extends DefaultPromise<Void> implements Chann
 
     @Override
     public ChannelPromise setSuccess() {
+        NoteLogger.logNote("查找ChannelPromise设置成功的位置");
         return setSuccess(null);
     }
 
