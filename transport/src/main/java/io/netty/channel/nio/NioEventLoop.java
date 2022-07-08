@@ -585,7 +585,7 @@ public final class NioEventLoop extends SingleThreadEventLoop {
     }
 
     private void processSelectedKeys() {
-        NoteLogger.logNote("processSelectedKeys");
+        NoteLogger.logNote("processSelectedKeys selectedKeys", selectedKeys.keys[0], selectedKeys.size);
 
         if (selectedKeys != null) {
             processSelectedKeysOptimized();

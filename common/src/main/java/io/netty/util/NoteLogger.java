@@ -18,6 +18,6 @@ public class NoteLogger {
         String callerClass = ste.getClassName();
         String callerMethod = ste.getMethodName();
         String[] tmp = callerClass.split("\\.");
-        logger.info("[" + tmp[tmp.length - 1] + " " + callerMethod + "]" + " " + sb);
+        logger.info("[" + tmp[tmp.length - 1] + " " + callerMethod + "]" + " " + sb.toString().trim());
     }
 }

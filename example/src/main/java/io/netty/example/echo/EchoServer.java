@@ -60,7 +60,7 @@ public final class EchoServer {
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 100)
-                    // .handler(new LoggingHandler(LogLevel.INFO)) // LoggingHandler注释掉 msg减少一次处理
+                    // .handler(new LoggingHandler(LogLevel.INFO)) LoggingHandler注释掉 msg减少一次处理
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {

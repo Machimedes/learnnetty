@@ -310,7 +310,7 @@ public abstract class AbstractBootstrap<B extends AbstractBootstrap<B, C>, C ext
         Channel channel = null;
         try {
             channel = channelFactory.newChannel();
-            NoteLogger.logNote("通过channelFactory构造channel", channel);
+            NoteLogger.logNote("通过channelFactory构造channel", channel,"AbstractNioChannel");
             init(channel);
             NoteLogger.logNote("完成socketSocketChannel初始化"
                     , "此时channel pipeline中只有channelInitializer",

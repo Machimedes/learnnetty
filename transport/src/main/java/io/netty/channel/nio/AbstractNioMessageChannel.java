@@ -78,6 +78,8 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
             try {
                 try {
                     do {
+                        NoteLogger.logNote("每个channel独有一个unsafe"
+                                , "每个unsafte独有一个readBuf", "对于serverSocketChannel通过accept读取socketChannel");
                         int localRead = doReadMessages(readBuf);
                         if (localRead == 0) {
                             break;
@@ -94,7 +96,7 @@ public abstract class AbstractNioMessageChannel extends AbstractNioChannel {
                 }
 
                 int size = readBuf.size();
-                for (int i = 0; i < size; i ++) {
+                for (int i = 0; i < size; i++) {
                     System.out.println(readBuf.get(i));
                     readPending = false;
                     pipeline.fireChannelRead(readBuf.get(i));

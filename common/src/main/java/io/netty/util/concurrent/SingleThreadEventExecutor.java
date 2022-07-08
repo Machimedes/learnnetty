@@ -167,6 +167,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
         super(parent);
         this.addTaskWakesUp = addTaskWakesUp;
         this.maxPendingTasks = DEFAULT_MAX_PENDING_EXECUTOR_TASKS;
+        NoteLogger.logNote("ThreadExecutorMap.apply");
         this.executor = ThreadExecutorMap.apply(executor, this);
         this.taskQueue = ObjectUtil.checkNotNull(taskQueue, "taskQueue");
         this.rejectedExecutionHandler = ObjectUtil.checkNotNull(rejectedHandler, "rejectedHandler");
@@ -339,6 +340,7 @@ public abstract class SingleThreadEventExecutor extends AbstractScheduledEventEx
      * before.
      */
     protected void addTask(Runnable task) {
+        NoteLogger.logNote("add task to queue");
         ObjectUtil.checkNotNull(task, "task");
         if (!offerTask(task)) {
             reject(task);
